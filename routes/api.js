@@ -43,6 +43,8 @@ router.get("/cryptodata", function (req, res, next) {
     units *
     (parseFloat(filteredData.slice(-1)[0]["Close"]) -
       parseFloat(filteredData[0]["Close"]));
+  let cost = parseFloat(filteredData[0]["Close"]) * units;
+  let sale = parseFloat(filteredData.slice(-1)[0]["Close"]) * units;
 
   res.json({
     message: "200",
@@ -52,6 +54,8 @@ router.get("/cryptodata", function (req, res, next) {
       start: filteredData[0],
       end: filteredData.slice(-1)[0],
       profit: profit,
+      cost: cost.toFixed(2),
+      sale: sale.toFixed(2),
     },
     query: query,
   });
