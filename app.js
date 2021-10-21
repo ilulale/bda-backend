@@ -1,6 +1,9 @@
 var createError = require("http-errors");
 var express = require("express");
-var cors = require("cors");
+const fileUpload = require("express-fileupload");
+const cors = require("cors");
+const morgan = require("morgan");
+const _ = require("lodash");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -16,11 +19,18 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
 app.use(cors());
+
+app.use(morgan("dev"));
 app.use(logger("dev"));
+app.use(
+  fileUpload({
+    createParentPath: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
